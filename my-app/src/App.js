@@ -3,12 +3,11 @@ import { createBrowserRouter,RouterProvider} from "react-router-dom";
 import Navbar from './components/Navbar';
 import Login from './components/Login';
 import Signup from './components/Signup';
-import React,{useState}from "react";
+import React,{ useState}from "react";
 import LoadingBar from 'react-top-loading-bar';
 import About from './components/About';
 import Services from './components/Services';
 import Footer from './components/Footer';
-import Welcome from './components/Welcome';
 import Main from './components/Main';
 import Market from './components/Market';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -17,6 +16,7 @@ import Camerageter from './components/Camerageter';
 import App3 from './components/App3';
 import BuyNow from './components/BuyNow';
 import Upload from './components/Upload';
+import Welcomepage from './components/Wecomepage';
 
 function App() {
   const notes = [
@@ -56,14 +56,13 @@ function App() {
   const handleonClick2=()=>{
     showalert();
   }
-  
   const router=createBrowserRouter([
     {
       path:"/",
       element:<><Navbar showalert={showalert} handleonClick2={handleonClick2} click={click} handleonclicklogin={ handleonclicklogin} /><Alert style={{position:""}}/><LoadingBar
       color='black'
       progress={progress}
-      /><Welcome click={click} handleonclicklogin={ handleonclicklogin} /><Footer/></>
+      /><Welcomepage/><Footer/></>
     },
     {
       path:"/home",

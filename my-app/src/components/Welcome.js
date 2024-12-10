@@ -1,67 +1,39 @@
 import React from "react";
-import Carousel from "react-bootstrap/Carousel";
 
-export default function Welcome() {
+
+// Carousel Component
+const WelcomeCarousel = () => {
   return (
-    <div className="min-h-full bg-green-50 flex items-center justify-center p-6">
-      <div className="w-full max-w-4xl bg-white rounded-xl shadow-2xl overflow-hidden">
-        <Carousel>
-          <Carousel.Item>
-            <img
-              className="d-block w-full h-96 object-cover"
-              src="/img1.jpg"
-              alt="Modern Farming"
-            />
-            <Carousel.Caption className="bg-black bg-opacity-50 p-4 rounded">
-              <h3 className="text-2xl font-bold text-white">Modern Agricultural Solutions</h3>
-              <p className="text-green-200">Empowering farmers with cutting-edge technology and resources</p>
-            </Carousel.Caption>
-          </Carousel.Item>
-          <Carousel.Item>
-            <img
-              className="d-block w-full h-96 object-cover"
-              src="/img2.jpg"
-              alt="Crop Management"
-            />
-            <Carousel.Caption className="bg-black bg-opacity-50 p-4 rounded">
-              <h3 className="text-2xl font-bold text-white">Smart Crop Management</h3>
-              <p className="text-green-200">Track, analyze, and optimize your agricultural productivity</p>
-            </Carousel.Caption>
-          </Carousel.Item>
-          <Carousel.Item>
-            <img
-              className="d-block w-full h-96 object-cover"
-              src="/img3.jpg"
-              alt="Community Support"
-            />
-            <Carousel.Caption className="bg-black bg-opacity-50 p-4 rounded">
-              <h3 className="text-2xl font-bold text-white">Farmer Community Network</h3>
-              <p className="text-green-200">Connect, learn, and grow together with fellow farmers</p>
-            </Carousel.Caption>
-          </Carousel.Item>
-        </Carousel>
-        
-        <div className="p-8 text-center">
-          <h2 className="text-3xl font-bold text-green-800 mb-4">Welcome to Farmer's Companion</h2>
-          <p className="text-gray-600 mb-6">
-            Your one-stop platform for agricultural insights, support, and community.
-          </p>
-          <div className="flex justify-center space-x-4">
-            <a 
-              href="/login" 
-              className="bg-green-600 text-white px-6 py-3 rounded-md hover:bg-green-700 transition duration-300"
-            >
-              Login
-            </a>
-            <a 
-              href="/signup" 
-              className="bg-white text-green-600 px-6 py-3 rounded-md border border-green-600 hover:bg-green-50 transition duration-300"
-            >
-              Sign Up
-            </a>
+    <div className="w-full h-full relative">
+      <div className="absolute inset-0 bg-black opacity-50 z-10"></div>
+      <div className="relative z-20">
+        <div className="grid grid-cols-4 h-screen">
+          <div className="col-span-4 relative">
+            <div className="absolute inset-0">
+              <div 
+                className="bg-cover bg-center h-full w-full transition-all duration-1000"
+                style={{ 
+                  backgroundImage: 'url("/anuty.jpg")',
+                  backgroundPosition: 'center',
+                  opacity: 0.8
+                }}
+              ></div>
+            </div>
+            <div className="absolute inset-0 bg-black opacity-40"></div>
+            <div className="relative z-30 flex items-center justify-center h-full">
+              <div className="text-center text-white px-4">
+                <h1 className="text-4xl md:text-6xl font-bold mb-4 drop-shadow-lg">
+                  Empowering Farmers Through Technology
+                </h1>
+                <p className="text-xl md:text-2xl mb-8 max-w-2xl mx-auto drop-shadow-md">
+                  Connecting farmers with innovative solutions, advanced analytics, and personalized support
+                </p>
+              </div>
+            </div>
           </div>
         </div>
       </div>
     </div>
   );
-}
+};
+export default WelcomeCarousel;

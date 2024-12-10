@@ -10,6 +10,7 @@ import {
   ArrowLeftOnRectangleIcon,    // Alternative logout icon
   CogIcon
 } from '@heroicons/react/24/outline';
+// import NotificationBar from './Notification';
 
 export default function Navbar(props) {
   const location = useLocation();
@@ -70,7 +71,7 @@ export default function Navbar(props) {
               alt="Government Agriculture Logo" 
               className="h-10 w-10"
             />
-            <span className="text-xl font-bold text-green-800">Farmer Support Portal</span>
+            <span className="text-xl font-bold text-green-800">Agro-सफल</span>
           </div>
         </Link>
 
@@ -167,6 +168,7 @@ export default function Navbar(props) {
           )}
         </div>
       </div>
+      {/* <NotificationBar/> */}
     </nav>
   );
 }

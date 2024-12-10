@@ -1,5 +1,8 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { Camera, Shield, MapPin, HelpCircle, FileText } from 'lucide-react';
+import FarmerSupportCenterLocator from './Farmersupportcenter';
+import FarmerResourcesPortal from './farmerresources';
+import GovernmentSchemesPortal from './framerschems';
 
 
 const Camerageter = () => {
@@ -47,7 +50,6 @@ const Camerageter = () => {
       })
       .catch((err) => {
         console.error("Error accessing the camera: ", err);
-        alert("Could not access the camera. Please allow camera permissions.");
       });
   }, []);
 
@@ -151,6 +153,16 @@ const Camerageter = () => {
     </div>
   );
 
+  const renderSupportCentersSection = () => (
+    <FarmerSupportCenterLocator/>
+  );
+  const renderSchemessSection = () => {
+    return <GovernmentSchemesPortal/>
+  };
+  const renderResourcesSection = () => {
+    return <FarmerResourcesPortal />;
+  };
+
   const renderSideNavigation = () => (
     <div className="bg-green-900 text-white p-4 rounded-lg">
       <h2 className="text-xl font-bold mb-4">Farmer Support Services</h2>
@@ -168,17 +180,20 @@ const Camerageter = () => {
           <HelpCircle className="inline mr-2" /> Agricultural Advisory
         </button>
         <button 
-          className="w-full text-left p-2 rounded mb-2 hover:bg-green-800"
+          onClick={() => setActiveSection('Support Centers')}
+          className={`w-full text-left p-2 rounded mb-2 ${activeSection === 'Support Centers' ? 'bg-green-700' : 'hover:bg-green-800'}`}
         >
           <MapPin className="inline mr-2" /> Regional Support Centers
         </button>
         <button 
-          className="w-full text-left p-2 rounded mb-2 hover:bg-green-800"
+          onClick={() => setActiveSection('Schemes')}
+          className={`w-full text-left p-2 rounded mb-2 ${activeSection === 'Schemes' ? 'bg-green-700' : 'hover:bg-green-800'}`}
         >
           <Shield className="inline mr-2" /> Government Schemes
         </button>
         <button 
-          className="w-full text-left p-2 rounded hover:bg-green-800"
+          onClick={() => setActiveSection('resources')}
+          className={`w-full text-left p-2 rounded mb-2 ${activeSection === 'resources' ? 'bg-green-700' : 'hover:bg-green-800'}`}
         >
           <FileText className="inline mr-2" /> Resources & Documentation
         </button>
@@ -189,7 +204,7 @@ const Camerageter = () => {
   return (
     <div className="min-h-screen bg-green-100 p-4 lg:p-8">
       <div className="container mx-auto">
-        <header className="bg-white shadow-lg rounded-lg p-4 mb-6">
+        <header className="rounded-lg p-4 mb-6">
           <h1 className="text-3xl font-bold text-green-900 text-center">
            
           </h1>
@@ -201,6 +216,9 @@ const Camerageter = () => {
           <div className="md:col-span-3">
             {activeSection === 'disease-detection' && renderDiseaseDetectionSection()}
             {activeSection === 'advisory' && renderAdvisorySection()}
+            {activeSection === 'Support Centers' && renderSupportCentersSection()}
+            {activeSection === 'Schemes' && renderSchemessSection()}
+            {activeSection === 'resources' && renderResourcesSection()}
           </div>
         </div>
       </div>
