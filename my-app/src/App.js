@@ -83,7 +83,7 @@ function App() {
       element:<><Navbar showalert={showalert} handleonClick2={handleonClick2} click={click} handleonclicklogin={ handleonclicklogin} /><LoadingBar
       color='black'
       progress={progress}
-      /><Upload/><Footer/></>
+      /><Upload/></>
     },
     {
       path:"/services",

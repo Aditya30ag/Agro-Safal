@@ -6,16 +6,41 @@ import {
   DocumentTextIcon, 
   CloudIcon, 
   UserCircleIcon,
-  ArrowRightOnRectangleIcon,  // Corrected logout icon
-  ArrowLeftOnRectangleIcon,    // Alternative logout icon
-  CogIcon
+  ArrowRightOnRectangleIcon,
+  ArrowLeftOnRectangleIcon,
+  CogIcon,
+  Bars3Icon,
+  XMarkIcon
 } from '@heroicons/react/24/outline';
-// import NotificationBar from './Notification';
+
+
+export const ProtectedRoute = ({ children }) => {
+  const navigate = useNavigate();
+  const [isAuthenticated, setIsAuthenticated] = useState(false);
+
+  useEffect(() => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+
+      navigate('/login', { 
+        state: { 
+          message: 'You must be logged in to access this page.' 
+        } 
+      });
+      setIsAuthenticated(false);
+    } else {
+      setIsAuthenticated(true);
+    }
+  }, [navigate]);
+
+  return isAuthenticated ? children : null;
+};
 
 export default function Navbar(props) {
   const location = useLocation();
   const navigate = useNavigate();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [weatherData, setWeatherData] = useState({
     condition: '',
     temperature: ''
@@ -44,7 +69,6 @@ export default function Navbar(props) {
     if (token){
       setIsAuthenticated(true);
     }
-    
   }, []);
 
   // Logout handler
@@ -53,122 +77,244 @@ export default function Navbar(props) {
     setIsAuthenticated(false);
     navigate('/');
     props.showalert && props.showalert();
+    setIsMobileMenuOpen(false);
+    window.location.reload();
   };
 
   // Navigation click handler
   const handleNavigation = () => {
     props.handleonClick2 && props.handleonClick2();
+    setIsMobileMenuOpen(false);
+  };
+
+  // Toggle mobile menu
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
   };
 
   return (
     <nav className="bg-gradient-to-b from-green-50 to-transparent shadow-sm">
-      <div className=" mx-auto px-4 py-3 flex justify-between items-center">
-        {/* Logo and Title */}
-        <Link to="/" style={{textDecoration:"none"}}>
-          <div className="flex items-center space-x-3">
-            <img 
-              src="/Screenshot 2024-10-20 141808.png" 
-              alt="Government Agriculture Logo" 
-              className="h-10 w-10"
-            />
-            <span className="text-xl font-bold text-green-800">Agro-सफल</span>
-          </div>
-        </Link>
-
-        {/* Main Navigation */}
-        <div className="flex items-center space-x-6">
-          <Link 
-            to="/home" 
-            onClick={handleNavigation}
-            className={`flex items-center space-x-1 ${
-              location.pathname === '/home' 
-                ? 'text-green-700 font-semibold' 
-                : 'text-gray-600 hover:text-green-700'
-            }`}
-          >
-            <HomeIcon className="h-5 w-5" />
-            <span>Home</span>
-          </Link>
-
-          <Link 
-            to="/about" 
-            onClick={handleNavigation}
-            className={`flex items-center space-x-1 ${
-              location.pathname === '/about' 
-                ? 'text-green-700 font-semibold' 
-                : 'text-gray-600 hover:text-green-700'
-            }`}
-          >
-            <InformationCircleIcon className="h-5 w-5" />
-            <span>About</span>
-          </Link>
-
-          <Link 
-            to="/services" 
-            onClick={handleNavigation}
-            className={`flex items-center space-x-1 ${
-              location.pathname === '/services' 
-                ? 'text-green-700 font-semibold' 
-                : 'text-gray-600 hover:text-green-700'
-            }`}
-          >
-            <DocumentTextIcon className="h-5 w-5" />
-            <span>Services</span>
-          </Link>
-          <Link 
-            to="/market" 
-            onClick={handleNavigation}
-            className={`flex items-center space-x-1 ${
-              location.pathname === '/market' 
-                ? 'text-green-700 font-semibold' 
-                : 'text-gray-600 hover:text-green-700'
-            }`}
-          >
-            <CogIcon className="h-5 w-5" />
-            <span>Livemarket</span>
-          </Link>
-        </div>
-
-        {/* Weather and Authentication */}
-        <div className="flex items-center space-x-4 ml-12">
-          {/* Weather Display */}
-          <div className="flex items-center space-x-2 text-gray-700">
-            <CloudIcon className="h-6 w-6 text-blue-500" />
-            <span>{weatherData.condition} {weatherData.temperature}°C</span>
-          </div>
-
-          {/* Authentication Buttons */}
-          {!isAuthenticated ? (
-            <div className="flex space-x-3">
-              <Link 
-                to="/login" 
-                onClick={handleNavigation}
-                className="btn btn-outline-green flex items-center space-x-1"
-              >
-                <ArrowLeftOnRectangleIcon className="h-5 w-5" />
-                <span>Login</span>
-              </Link>
-              <Link 
-                to="/signup" 
-                onClick={handleNavigation}
-                className="btn btn-green flex items-center space-x-1"
-              >
-                <UserCircleIcon className="h-5 w-5" />
-                <span>Sign Up</span>
-              </Link>
+      <div className="container mx-auto px-4 py-3">
+        {/* Desktop and Mobile Header */}
+        <div className="flex justify-between items-center">
+          {/* Logo and Title */}
+          <Link to={isAuthenticated ? "/home" : "/"}  style={{textDecoration:"none"}}>
+            <div className="flex items-center space-x-3">
+              <img 
+                src="/Screenshot 2024-10-20 141808.png" 
+                alt="Government Agriculture Logo" 
+                className="h-10 w-10"
+              />
+              <span className="text-xl font-bold text-green-800">Agro-सफल</span>
             </div>
-          ) : (
+          </Link>
+
+          {/* Mobile Menu Toggle */}
+          <div className="md:hidden">
             <button 
-              onClick={handleLogout}
-              className="btn btn-red flex items-center space-x-1"
+              onClick={toggleMobileMenu} 
+              className="text-green-800 focus:outline-none"
             >
-              
-              <span><ArrowRightOnRectangleIcon className="h-5 w-5" />Logout</span>
+              {isMobileMenuOpen ? (
+                <XMarkIcon className="h-6 w-6" />
+              ) : (
+                <Bars3Icon className="h-6 w-6" />
+              )}
             </button>
-          )}
+          </div>
+
+          {/* Desktop Navigation */}
+          <div className="hidden md:flex items-center space-x-6">
+            {/* Navigation Links */}
+            <Link 
+              to={isAuthenticated ? "/home" : "/login"} 
+              onClick={handleNavigation}
+              className={`flex items-center space-x-1 ${
+                location.pathname === '/home' 
+                  ? 'text-green-700 font-semibold' 
+                  : 'text-gray-600 hover:text-green-700'
+              }`}
+            >
+              <HomeIcon className="h-5 w-5" />
+              <span>Home</span>
+            </Link>
+
+            <Link 
+              to="/about" 
+              onClick={handleNavigation}
+              className={`flex items-center space-x-1 ${
+                location.pathname === '/about' 
+                  ? 'text-green-700 font-semibold' 
+                  : 'text-gray-600 hover:text-green-700'
+              }`}
+            >
+              <InformationCircleIcon className="h-5 w-5" />
+              <span>About</span>
+            </Link>
+
+            <Link 
+              to="/services" 
+              onClick={handleNavigation}
+              className={`flex items-center space-x-1 ${
+                location.pathname === '/services' 
+                  ? 'text-green-700 font-semibold' 
+                  : 'text-gray-600 hover:text-green-700'
+              }`}
+            >
+              <DocumentTextIcon className="h-5 w-5" />
+              <span>Services</span>
+            </Link>
+
+            <Link 
+              to={isAuthenticated ? "/market" : "/login"} 
+              onClick={handleNavigation}
+              className={`flex items-center space-x-1 ${
+                location.pathname === '/market' 
+                  ? 'text-green-700 font-semibold' 
+                  : 'text-gray-600 hover:text-green-700'
+              }`}
+            >
+              <CogIcon className="h-5 w-5" />
+              <span>Livemarket</span>
+            </Link>
+          </div>
+
+          {/* Weather and Authentication */}
+          <div className="hidden md:flex items-center space-x-4">
+            {/* Weather Display */}
+            <div className="flex items-center space-x-2 text-gray-700">
+              <CloudIcon className="h-6 w-6 text-blue-500" />
+              <span>{weatherData.condition} {weatherData.temperature}°C</span>
+            </div>
+
+            {/* Authentication Buttons */}
+            {!isAuthenticated ? (
+              <div className="flex space-x-3">
+                <Link 
+                  to="/login" 
+                  onClick={handleNavigation}
+                  className="btn btn-outline-green flex items-center space-x-1"
+                >
+                  <ArrowLeftOnRectangleIcon className="h-5 w-5" />
+                  <span>Login</span>
+                </Link>
+                <Link 
+                  to="/signup" 
+                  onClick={handleNavigation}
+                  className="btn btn-green flex items-center space-x-1"
+                >
+                  <UserCircleIcon className="h-5 w-5" />
+                  <span>Sign Up</span>
+                </Link>
+              </div>
+            ) : (
+              <button 
+                onClick={handleLogout}
+                className="btn btn-red flex items-center space-x-1"
+              >
+                <ArrowRightOnRectangleIcon className="h-5 w-5" />
+                <span>Logout</span>
+              </button>
+            )}
+          </div>
         </div>
+
+        {/* Mobile Menu */}
+        {isMobileMenuOpen && (
+          <div className="md:hidden absolute left-0 right-0 bg-white shadow-lg">
+            <div className="flex flex-col space-y-4 p-4">
+              {/* Mobile Navigation Links */}
+              <Link 
+                to={isAuthenticated ? "/home" : "/login"} 
+                onClick={handleNavigation}
+                className={`flex items-center space-x-1 ${
+                  location.pathname === '/home' 
+                    ? 'text-green-700 font-semibold' 
+                    : 'text-gray-600 hover:text-green-700'
+                }`}
+              >
+                <HomeIcon className="h-5 w-5" />
+                <span>Home</span>
+              </Link>
+
+              <Link 
+                to="/about" 
+                onClick={handleNavigation}
+                className={`flex items-center space-x-1 ${
+                  location.pathname === '/about' 
+                    ? 'text-green-700 font-semibold' 
+                    : 'text-gray-600 hover:text-green-700'
+                }`}
+              >
+                <InformationCircleIcon className="h-5 w-5" />
+                <span>About</span>
+              </Link>
+
+              <Link 
+                to="/services" 
+                onClick={handleNavigation}
+                className={`flex items-center space-x-1 ${
+                  location.pathname === '/services' 
+                    ? 'text-green-700 font-semibold' 
+                    : 'text-gray-600 hover:text-green-700'
+                }`}
+              >
+                <DocumentTextIcon className="h-5 w-5" />
+                <span>Services</span>
+              </Link>
+
+              <Link 
+                to={isAuthenticated ? "/market" : "/login"} 
+                onClick={handleNavigation}
+                className={`flex items-center space-x-1 ${
+                  location.pathname === '/market' 
+                    ? 'text-green-700 font-semibold' 
+                    : 'text-gray-600 hover:text-green-700'
+                }`}
+              >
+                <CogIcon className="h-5 w-5" />
+                <span>Livemarket</span>
+              </Link>
+
+              {/* Weather Display */}
+              <div className="flex items-center space-x-2 text-gray-700">
+                <CloudIcon className="h-6 w-6 text-blue-500" />
+                <span>{weatherData.condition} {weatherData.temperature}°C</span>
+              </div>
+
+              {/* Mobile Authentication Buttons */}
+              {!isAuthenticated ? (
+                <div className="flex flex-col space-y-3">
+                  <Link 
+                    to="/login" 
+                    onClick={handleNavigation}
+                    className="btn btn-outline-green flex items-center space-x-1"
+                  >
+                    <ArrowLeftOnRectangleIcon className="h-5 w-5" />
+                    <span>Login</span>
+                  </Link>
+                  <Link 
+                    to="/signup" 
+                    onClick={handleNavigation}
+                    className="btn btn-green flex items-center space-x-1"
+                  >
+                    <UserCircleIcon className="h-5 w-5" />
+                    <span>Sign Up</span>
+                  </Link>
+                </div>
+              ) : (
+                <button 
+                  onClick={handleLogout}
+                  className="btn btn-red flex items-center space-x-1"
+                >
+                  <ArrowRightOnRectangleIcon className="h-5 w-5" />
+                  <span>Logout</span>
+                </button>
+              )}
+            </div>
+          </div>
+        )}
       </div>
-      {/* <NotificationBar/> */}
     </nav>
   );
 }

@@ -63,7 +63,6 @@ const Camerageter = () => {
     canvasRef.current.toBlob((blob) => {
       const formData = new FormData();
       formData.append('file', blob, 'plant_image.jpg');
-
       fetch('http://10.12.25.213:8000/predict/', {
         method: 'POST',
         body: formData

@@ -10,7 +10,7 @@ export default function Welcomepage() {
           <Carousel.Item>
             <img
               className="d-block w-full h-96 object-cover"
-              src="/img1.jpg"
+              src="/img4.jpg"
               alt="Modern Farming"
             />
             <Carousel.Caption className="bg-black bg-opacity-50 p-4 rounded">

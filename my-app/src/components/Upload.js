@@ -1,6 +1,20 @@
-import React, { useRef, useState} from 'react';
+import React, { useState, useRef} from 'react';
+import { 
+  Upload, 
+  Microscope, 
+  Shield, 
+  Leaf, 
+  AlertCircle, 
+  CheckCircle2, 
+  Info 
+} from 'lucide-react';
 
-function App() {
+const Uploads = () => {
+  const [selectedImage, setSelectedImage] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [prediction, setPrediction] = useState(null);
+  const fileInputRef = useRef(null);
+  
   const diseases = [
     { plant: "Apple", name: "Apple Scab", cure: "Apply fungicides like captan or myclobutanil." },
     { plant: "Apple", name: "Apple Black Rot", cure: "Prune infected areas and apply fungicides." },
@@ -30,74 +44,183 @@ function App() {
     { plant: "Tomato", name: "Mosaic Virus", cure: "Remove infected plants and sanitize tools." },
     { plant: "Tomato", name: "Yellow Leaf Curl Virus", cure: "Use resistant varieties and control whiteflies." }
   ];
-  const [file, setFile] = useState(null);
 
-  const handleChange = (e) => {
-    const file = e.target.files[0];
+  const handleFileSelect = (event) => {
+    const file = event.target.files[0];
     if (file) {
       const reader = new FileReader();
-      reader.onload = (event) => {
-        const imageSrc = event.target.result;
-        console.log(imageSrc);
-        setFile(imageSrc);
-        //scanImage(imageSrc);
+      reader.onloadend = () => {
+        setSelectedImage(reader.result);
+        setPrediction(null); // Reset previous prediction
       };
       reader.readAsDataURL(file);
     }
   };
 
-  const canvasRef = useRef(null);
-  const [result, setResult] = useState('');
-  const [result1, setResult1] = useState('');
-  const [loading, setLoading] = useState(false);
-
   const uploadImage = () => {
-    setLoading(true);
-    canvasRef.current.toBlob((blob) => {
-      const formData = new FormData();
-      formData.append('file', blob, 'plant_image.jpg');
+    if (!selectedImage) {
+      console.log('Please select an image first');
+      return;
+    }
 
-      fetch('http://10.12.25.213:8000/predict/', {
-        method: 'POST',
-        body: formData
-      })
-        .then(response => response.json())
-        .then(data => {
-          setLoading(false);
-          if (data.prediction && data.prediction.length > 0) {
-            const { label, score } = data.prediction[0];
-            setResult(`Prediction: ${label} | Accuracy: ${score}`);
-            const diseaseInfo = diseases.find(disease => disease.name === label);
-            if (diseaseInfo) {
-              console.log(`Disease: ${diseaseInfo.name}, Cure: ${diseaseInfo.cure}`);
-              setResult1(diseaseInfo.cure);
-            } else {
-              console.log("Disease not found in the list.");
-              setResult1("");
-            }
-          } else {
-            setResult("Prediction is not defined");
-            setResult1("");
-          }
-        })
-        .catch(error => {
-          setLoading(false);
-          console.error("Error uploading the image or in prediction: ", error);
-          setResult("Please retake the picture");
-          setResult1("");
+    setLoading(true);
+    fetch(selectedImage)
+      .then(res => res.blob())
+      .then(blob => {
+        const formData = new FormData();
+        formData.append('file', blob, 'plant_image.jpg');
+        console.log(formData);
+
+        return fetch('http://10.12.25.213:8000/predict/', {
+          method: 'POST',
+          body: formData
         });
-    }, 'image/jpeg');
+      })
+      .then(response => response.json())
+      .then(data => {
+        setLoading(false);
+        if (data.prediction && data.prediction.length > 0) {
+          const { label, score } = data.prediction[0];
+          const diseaseInfo = diseases.find(disease => disease.name === label);
+          
+          setPrediction({
+            label,
+            accuracy: score,
+            details: diseaseInfo || null
+          });
+        } else {
+          setPrediction(null);
+          alert("Could not identify the plant disease");
+        }
+      })
+      .catch(error => {
+        setLoading(false);
+        console.error("Error: ", error);
+        alert("An error occurred. Please try again.");
+      });
+  };
+
+  const getSeverityColor = (severity) => {
+    switch(severity) {
+      case 'high': return 'text-red-600';
+      case 'moderate': return 'text-yellow-600';
+      default: return 'text-green-600';
+    }
   };
 
   return (
-    <div className="App" style={{marginTop:"150px"}}>
-      <button onClick={uploadImage}>Upload Image</button>
-      <h1 className="styled-text">Upload a image here</h1>
-      <div><input id="dynamicInput" type="file" onChange={handleChange} accept="image/*" /></div>
-      {file && <img src={file} alt="Preview" style={{ maxWidth: '100%', maxHeight: '300px', marginTop: '20px' }} />}
-      {result}{result1}{loading}
+    <div className="max-w-md mx-auto bg-white rounded-3xl shadow-2xl overflow-hidden my-2">
+      {/* Header */}
+      <div className="bg-green-700 text-white p-6 flex items-center">
+        
+        <div>
+          <h1 className="text-2xl font-bold">Agricultural Diagnostic Center</h1>
+          <p className="text-sm opacity-80">Plant Health Analysis Platform</p>
+        </div>
+      </div>
+
+      {/* Image Upload Section */}
+      <div className="p-6">
+        <input 
+          type="file" 
+          ref={fileInputRef}
+          onChange={handleFileSelect}
+          accept="image/*" 
+          className="hidden"
+        />
+        
+        <button 
+          onClick={() => fileInputRef.current.click()}
+          className="w-full py-3 px-4 bg-green-100 text-green-800 rounded-lg 
+                     flex items-center justify-center hover:bg-green-200 
+                     transition-colors duration-300"
+        >
+          <Upload className="mr-3" size={24} />
+          Upload Plant Image
+        </button>
+
+        {/* Image Preview */}
+        {selectedImage && (
+          <div className="mt-6 mb-4 rounded-lg overflow-hidden shadow-md">
+            <img 
+              src={selectedImage} 
+              alt="Selected Plant" 
+              className="w-full h-72 object-cover"
+            />
+          </div>
+        )}
+
+        {/* Analyze Button */}
+        {selectedImage && (
+          <button 
+            onClick={uploadImage}
+            disabled={loading}
+            className={`w-full py-3 rounded-lg mt-4 text-white transition-colors duration-300 
+                        ${loading 
+                          ? 'bg-gray-400 cursor-not-allowed' 
+                          : 'bg-green-600 hover:bg-green-700'}`}
+          >
+            {loading ? 'Analyzing...' : 'Diagnose Plant Disease'}
+          </button>
+        )}
+
+        {/* Prediction Result */}
+        {prediction && (
+          <div className="mt-6 bg-gray-50 rounded-lg p-5 space-y-4">
+            <div className="flex items-center">
+              <Microscope className="mr-3 text-green-600" size={24} />
+              <h3 className="text-lg font-semibold text-gray-800">Diagnostic Results</h3>
+            </div>
+
+            <div className="bg-white rounded-lg p-4 shadow-sm">
+              <div className="flex justify-between items-center">
+                <div>
+                  <p className="font-medium text-gray-700">
+                    Disease: {prediction.label}
+                  </p>
+                  <p className="text-sm text-gray-500">
+                    Accuracy: {(prediction.accuracy * 100).toFixed(2)}%
+                  </p>
+                </div>
+                {prediction.accuracy > 0.7 ? (
+                  <CheckCircle2 className="text-green-500" size={24} />
+                ) : (
+                  <AlertCircle className="text-yellow-500" size={24} />
+                )}
+              </div>
+            </div>
+
+            {prediction.details && (
+              <div className="bg-white rounded-lg p-4 shadow-sm">
+                <div className="flex items-center mb-2">
+                  <Leaf className="mr-2 text-green-500" size={20} />
+                  <h4 className="font-semibold text-gray-800">Treatment Recommendations</h4>
+                </div>
+                <p className="text-gray-600">{prediction.details.cure}</p>
+                
+                {prediction.details.severity && (
+                  <div className={`mt-2 flex items-center ${getSeverityColor(prediction.details.severity)}`}>
+                    <Info size={16} className="mr-2" />
+                    <span className="text-sm capitalize">
+                      Severity: {prediction.details.severity}
+                    </span>
+                  </div>
+                )}
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+
+      {/* Footer Guidance */}
+      <div className="bg-gray-100 p-4 text-center text-sm text-gray-600">
+        <p>
+          <Shield className="inline mr-2 text-green-600" size={16} />
+          Official tool. Consult local experts for comprehensive advice.
+        </p>
+      </div>
     </div>
   );
-}
+};
 
-export default App;
+export default Uploads;
