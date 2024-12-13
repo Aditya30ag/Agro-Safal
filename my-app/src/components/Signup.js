@@ -43,6 +43,7 @@ export default function Signup(props) {
     if (json.success === true) {
       localStorage.setItem("token", json.token);
       navigate("/home");
+      window.location.reload();
       props.showalert();
     } else {
       props.showalert();
@@ -140,7 +141,6 @@ export default function Signup(props) {
               />
             </div>
           </div>
-
           <div className="grid grid-cols-2 gap-4 mb-4">
             <div>
               <label htmlFor="state" className="block text-green-700 mb-2">State</label>

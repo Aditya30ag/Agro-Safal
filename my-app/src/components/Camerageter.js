@@ -229,7 +229,7 @@ const Camerageter = () => {
   );
 
   return (
-    <div className="min-h-screen bg-green-100 p-4 lg:p-8">
+    <div className="min-h-screen p-4 lg:p-8">
       <div className="container mx-auto">
         <header className="rounded-lg p-4 mb-6">
           <h1 className="text-3xl font-bold text-green-900 text-center">

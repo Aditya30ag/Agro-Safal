@@ -4,7 +4,7 @@ import Carousel from "react-bootstrap/Carousel";
 
 export default function Welcomepage() {
   return (
-    <div className="min-h-full bg-green-50 flex items-center justify-center p-6">
+    <div className="min-h-screen bg-green-50 flex items-center justify-center p-2">
       <div className="w-full max-w-4xl bg-white rounded-xl shadow-2xl overflow-hidden">
         <Carousel>
           <Carousel.Item>

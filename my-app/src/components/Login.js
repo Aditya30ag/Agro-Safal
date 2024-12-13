@@ -68,7 +68,7 @@ export default function Login(props) {
       {/* Login Form Section */}
       <div className="w-full lg:w-1/3 bg-white flex items-center justify-center px-4 py-8">
         <div className="w-full max-w-md">
-          <div className="text-center mb-8">
+          <div className="text-center mb-8 rounded-xl">
             <img 
               src="/logo.jpg" 
               alt="Farmer Support Logo" 
@@ -136,13 +136,19 @@ export default function Login(props) {
               <UserIcon className="h-5 w-5" />
               <span>Login to Your Account</span>
             </button>
+            
 
             {/* Signup Link */}
             <div className="text-center">
+            <div className="text-sm">
+              <Link to="/login" className="font-medium text-green-600 hover:text-green-500">
+                Forgot your password?
+              </Link>
+            </div>
               <Link 
                 to="/signup" 
                 onClick={props.handleonClick2}
-                className="text-green-600 hover:text-green-800 transition-colors"
+                className="font-medium text-green-600 hover:text-green-500"
               >
                 Don't have an account? Sign Up
               </Link>

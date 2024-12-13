@@ -92,8 +92,9 @@ export default function Navbar(props) {
     setIsMobileMenuOpen(!isMobileMenuOpen);
   };
 
+  
   return (
-    <nav className="bg-gov-green-500 text-white shadow-lg rounded-full mt-2">
+    <nav className="bg-gov-green-500 text-white rounded-full mt-2 ">
       <div className="mx-auto px-4 py-3">
         {/* Desktop and Mobile Header */}
         <div className="flex justify-between items-center">
@@ -129,11 +130,12 @@ export default function Navbar(props) {
             <Link 
               to={isAuthenticated ? "/home" : "/login"} 
               onClick={handleNavigation}
-              className={`flex items-center space-x-1 ${
+              className={`flex items-center space-x-1 font-bold ${
                 location.pathname === '/home' 
                   ? 'text-green-700 font-semibold' 
                   : 'text-white hover:text-green-700'
               }`}
+              style={{textDecoration:"none"}}
             >
               <HomeIcon className="h-5 w-5" />
               <span>Home</span>
@@ -142,11 +144,12 @@ export default function Navbar(props) {
             <Link 
               to="/about" 
               onClick={handleNavigation}
-              className={`flex items-center space-x-1 ${
+              className={`flex items-center space-x-1 font-bold ${
                 location.pathname === '/about' 
                   ? 'text-green-700 font-semibold' 
                   : 'text-white hover:text-green-700'
               }`}
+              style={{textDecoration:"none"}}
             >
               <InformationCircleIcon className="h-5 w-5" />
               <span>About</span>
@@ -155,11 +158,12 @@ export default function Navbar(props) {
             <Link 
               to="/services" 
               onClick={handleNavigation}
-              className={`flex items-center space-x-1 ${
+              className={`flex items-center space-x-1 font-bold ${
                 location.pathname === '/services' 
                   ? 'text-green-700 font-semibold' 
                   : 'text-white hover:text-green-700'
               }`}
+              style={{textDecoration:"none"}}
             >
               <DocumentTextIcon className="h-5 w-5" />
               <span>Services</span>
@@ -168,11 +172,12 @@ export default function Navbar(props) {
             <Link 
               to={isAuthenticated ? "/market" : "/login"} 
               onClick={handleNavigation}
-              className={`flex items-center space-x-1 ${
+              className={`flex items-center space-x-1 font-bold ${
                 location.pathname === '/market' 
                   ? 'text-green-700 font-semibold' 
                   : 'text-white hover:text-green-700'
               }`}
+              style={{textDecoration:"none"}}
             >
               <CogIcon className="h-5 w-5" />
               <span>Livemarket</span>

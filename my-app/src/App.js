@@ -3,7 +3,7 @@ import { createBrowserRouter,RouterProvider} from "react-router-dom";
 import Navbar from './components/Navbar';
 import Login from './components/Login';
 import Signup from './components/Signup';
-import React,{ useState}from "react";
+import React,{ useState,useEffect}from "react";
 import LoadingBar from 'react-top-loading-bar';
 import About from './components/About';
 import Services from './components/Services';
@@ -29,7 +29,12 @@ function App() {
     { img:"/onion1.jpg",name:"Pears",title:"Pears are high in fiber, aiding digestion and promoting heart health. ",seller:"Big Farms",price:"200"},
     { img:"/apples.jpg",name:"Apples", title:"Apples are loaded with vitamins and antioxidants, supporting immunity and heart health. ", seller:"Aashvi",price:"150"},
   ];
-  document.body.style.backgroundColor="linear-gradient(white,#E0F8E7)";
+  
+  useEffect(() => {
+    document.body.style.background = 'linear-gradient(to bottom, white, #E0F8E7)';
+    document.body.style.minHeight = '100vh';
+    document.documentElement.style.minHeight = '100vh';
+  }, []);
   const [click,setclick]=useState(false);
   const [progress,setprogress]=useState(0);
   const handleonclicklogin=()=>{
@@ -62,7 +67,7 @@ function App() {
       element:<><Navbar showalert={showalert} handleonClick2={handleonClick2} click={click} handleonclicklogin={ handleonclicklogin} /><Alert style={{position:""}}/><LoadingBar
       color='black'
       progress={progress}
-      /><Welcomepage/><Footer/></>
+      /><Welcomepage/></>
     },
     {
       path:"/home",
