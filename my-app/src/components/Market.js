@@ -87,11 +87,11 @@ export default function Market(props) {
   };
 
   return (
-    <div className="mx-auto px-4 relative">
+    <div className="mx-auto px-4 relative bg-[#F5F5F0]">
       {/* Added to Cart Alert */}
       {isAddedToCart && (
         <div className="fixed top-4 right-4 z-50">
-          <div className="bg-green-500 text-white px-4 py-2 rounded-lg shadow-lg flex items-center">
+          <div className="bg-[#2C5E1A] text-white px-4 py-2 rounded-lg shadow-lg flex items-center">
             <svg 
               className="w-6 h-6 mr-2" 
               fill="none" 
@@ -112,30 +112,30 @@ export default function Market(props) {
       )}
 
       {props.notes.length === 0 ? (
-        <div className="flex items-center justify-center p-8 bg-gray-100 rounded-lg">
-          <InformationCircleIcon className="w-10 h-10 mr-4 text-blue-500" />
-          <p className="text-xl text-gray-700">No products available. Add a product.</p>
+        <div className="flex items-center justify-center p-8 bg-[#E6EFE0] rounded-lg">
+          <InformationCircleIcon className="w-10 h-10 mr-4 text-[#1A5F7A]" />
+          <p className="text-xl text-[#2C5E1A]">No products available. Add a product.</p>
         </div>
       ) : (
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
           {props.notes.map((note) => (
             <div
               key={note.name}
-              className="bg-white rounded-lg shadow-md overflow-hidden transition duration-300 hover:shadow-xl"
+              className="bg-white rounded-lg shadow-md overflow-hidden transition duration-300 hover:shadow-xl border border-[#2C5E1A]/10"
             >
               <img
                 src={note.img || '/placeholder-product.png'}
                 alt={note.name}
                 className="w-full h-48 object-cover"
               />
-              <div className="p-4">
-                <h3 className="text-xl font-semibold text-green-800">{note.name}</h3>
-                <p className="text-gray-600">{note.title}</p>
+              <div className="p-4 bg-[#F9FBF6]">
+                <h3 className="text-xl font-semibold text-[#2C5E1A]">{note.name}</h3>
+                <p className="text-[#4A6741]">{note.title}</p>
                 <div className="flex items-center justify-between mt-4">
-                  <span className="text-lg font-bold text-green-600">₹{note.price}</span>
+                  <span className="text-lg font-bold text-[#1A5F7A]">₹{note.price}</span>
                   <button
                     onClick={() => handleProductDetails(note)}
-                    className="px-4 py-2 text-sm text-white bg-green-600 rounded hover:bg-green-700"
+                    className="px-4 py-2 text-sm text-white bg-[#2C5E1A] rounded hover:bg-[#1A5F7A] transition-colors"
                   >
                     View Details
                   </button>

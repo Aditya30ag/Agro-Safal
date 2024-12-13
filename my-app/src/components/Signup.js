@@ -55,7 +55,7 @@ export default function Signup(props) {
   };
 
   return (
-    <div className="min-h-screen flex justify-center items-center">
+    <div className="min-h-screen flex justify-center items-center bg-white">
       {/* Carousel Section */}
       <div className="hidden lg:block lg:w-2/3">
         <WelcomeCarousel/>

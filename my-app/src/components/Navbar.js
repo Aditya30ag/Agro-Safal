@@ -93,8 +93,8 @@ export default function Navbar(props) {
   };
 
   return (
-    <nav className="bg-gradient-to-b from-green-50 to-transparent shadow-sm">
-      <div className="container mx-auto px-4 py-3">
+    <nav className="bg-gov-green-500 text-white shadow-lg rounded-full mt-2">
+      <div className="mx-auto px-4 py-3">
         {/* Desktop and Mobile Header */}
         <div className="flex justify-between items-center">
           {/* Logo and Title */}
@@ -105,7 +105,7 @@ export default function Navbar(props) {
                 alt="Government Agriculture Logo" 
                 className="h-10 w-10"
               />
-              <span className="text-xl font-bold text-green-800">Agro-सफल</span>
+              <span className="text-xl font-bold text-white">Agro-सफल</span>
             </div>
           </Link>
 
@@ -132,7 +132,7 @@ export default function Navbar(props) {
               className={`flex items-center space-x-1 ${
                 location.pathname === '/home' 
                   ? 'text-green-700 font-semibold' 
-                  : 'text-gray-600 hover:text-green-700'
+                  : 'text-white hover:text-green-700'
               }`}
             >
               <HomeIcon className="h-5 w-5" />
@@ -145,7 +145,7 @@ export default function Navbar(props) {
               className={`flex items-center space-x-1 ${
                 location.pathname === '/about' 
                   ? 'text-green-700 font-semibold' 
-                  : 'text-gray-600 hover:text-green-700'
+                  : 'text-white hover:text-green-700'
               }`}
             >
               <InformationCircleIcon className="h-5 w-5" />
@@ -158,7 +158,7 @@ export default function Navbar(props) {
               className={`flex items-center space-x-1 ${
                 location.pathname === '/services' 
                   ? 'text-green-700 font-semibold' 
-                  : 'text-gray-600 hover:text-green-700'
+                  : 'text-white hover:text-green-700'
               }`}
             >
               <DocumentTextIcon className="h-5 w-5" />
@@ -171,7 +171,7 @@ export default function Navbar(props) {
               className={`flex items-center space-x-1 ${
                 location.pathname === '/market' 
                   ? 'text-green-700 font-semibold' 
-                  : 'text-gray-600 hover:text-green-700'
+                  : 'text-white hover:text-green-700'
               }`}
             >
               <CogIcon className="h-5 w-5" />
@@ -182,7 +182,7 @@ export default function Navbar(props) {
           {/* Weather and Authentication */}
           <div className="hidden md:flex items-center space-x-4">
             {/* Weather Display */}
-            <div className="flex items-center space-x-2 text-gray-700">
+            <div className="flex items-center space-x-2 text-gray-700  text-white">
               <CloudIcon className="h-6 w-6 text-blue-500" />
               <span>{weatherData.condition} {weatherData.temperature}°C</span>
             </div>
@@ -193,7 +193,7 @@ export default function Navbar(props) {
                 <Link 
                   to="/login" 
                   onClick={handleNavigation}
-                  className="btn btn-outline-green flex items-center space-x-1"
+                  className="btn btn-outline-green flex items-center space-x-1 text-white"
                 >
                   <ArrowLeftOnRectangleIcon className="h-5 w-5" />
                   <span>Login</span>
@@ -201,7 +201,7 @@ export default function Navbar(props) {
                 <Link 
                   to="/signup" 
                   onClick={handleNavigation}
-                  className="btn btn-green flex items-center space-x-1"
+                  className="btn btn-green flex items-center space-x-1 text-white"
                 >
                   <UserCircleIcon className="h-5 w-5" />
                   <span>Sign Up</span>
@@ -210,7 +210,7 @@ export default function Navbar(props) {
             ) : (
               <button 
                 onClick={handleLogout}
-                className="btn btn-red flex items-center space-x-1"
+                className="btn btn-red flex items-center space-x-1 text-white"
               >
                 <ArrowRightOnRectangleIcon className="h-5 w-5" />
                 <span>Logout</span>
@@ -219,10 +219,10 @@ export default function Navbar(props) {
           </div>
         </div>
 
-        {/* Mobile Menu */}
-        {isMobileMenuOpen && (
-          <div className="md:hidden absolute left-0 right-0 bg-white shadow-lg">
-            <div className="flex flex-col space-y-4 p-4">
+         {/* Mobile Menu */}
+         {isMobileMenuOpen && (
+          <div className="md:hidden absolute left-0 right-0 bg-white shadow-lg z-50 rounded-3xl mt-10">
+            <div className="flex flex-col space-y-4 p-4 ">
               {/* Mobile Navigation Links */}
               <Link 
                 to={isAuthenticated ? "/home" : "/login"} 

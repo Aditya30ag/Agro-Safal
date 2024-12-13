@@ -51,7 +51,7 @@ const Uploads = () => {
       const reader = new FileReader();
       reader.onloadend = () => {
         setSelectedImage(reader.result);
-        setPrediction(null); // Reset previous prediction
+        setPrediction(null); 
       };
       reader.readAsDataURL(file);
     }

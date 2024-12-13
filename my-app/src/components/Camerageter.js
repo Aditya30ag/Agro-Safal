@@ -1,5 +1,5 @@
 import React, { useRef, useState, useEffect } from 'react';
-import { Camera, Shield, MapPin, HelpCircle, FileText } from 'lucide-react';
+import { Camera, Shield, MapPin, HelpCircle, FileText} from 'lucide-react';
 import FarmerSupportCenterLocator from './Farmersupportcenter';
 import FarmerResourcesPortal from './farmerresources';
 import GovernmentSchemesPortal from './framerschems';
@@ -94,22 +94,37 @@ const Camerageter = () => {
   };
 
   const renderDiseaseDetectionSection = () => (
-    <div className="bg-white p-6 rounded-lg shadow-md">
-      <h2 className="text-2xl font-bold text-green-800 mb-4">Plant Disease Detection</h2>
-      <div className="flex flex-wrap justify-center gap-4 mb-4">
-        <video ref={videoRef} width="320" height="240" autoPlay className="border-2 border-green-600 rounded-lg"></video>
-        <canvas ref={canvasRef} width="320" height="240" className="border-2 border-green-600 rounded-lg"></canvas>
+    <div className="bg-white p-4 md:p-6 rounded-lg shadow-md">
+      <h2 className="text-xl md:text-2xl font-bold text-green-800 mb-4 text-center">Plant Disease Detection</h2>
+      <div className="flex flex-col md:flex-row justify-center items-center gap-4 mb-4">
+        <div className="w-full md:w-1/2 max-w-md">
+          <video 
+            ref={videoRef} 
+            width="320" 
+            height="240" 
+            autoPlay 
+            className="w-full aspect-video border-2 border-green-600 rounded-lg"
+          ></video>
+        </div>
+        <div className="w-full md:w-1/2 max-w-md">
+          <canvas 
+            ref={canvasRef} 
+            width="320" 
+            height="240" 
+            className="w-full aspect-video border-2 border-green-600 rounded-lg"
+          ></canvas>
+        </div>
       </div>
-      <div className="flex flex-wrap justify-center gap-4 mb-4">
+      <div className="flex flex-col md:flex-row justify-center gap-4 mb-4">
         <button 
           onClick={captureImage} 
-          className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition"
+          className="w-full md:w-auto bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition"
         >
           Capture Image
         </button>
         <button 
           onClick={uploadImage} 
-          className="bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition"
+          className="w-full md:w-auto bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition"
         >
           Detect Disease
         </button>
@@ -117,10 +132,11 @@ const Camerageter = () => {
       {loading && <div className="text-center text-green-700">Processing...</div>}
       {result && (
         <div className="mt-4 p-4 bg-green-50 rounded-lg">
-          <div className="font-bold text-green-800">{result}</div>
+          <div className="font-bold text-green-800 break-words">{result}</div>
           {result1 && (
             <div className="mt-2 p-2 bg-white rounded-lg border border-green-200">
-              <strong>Recommended Cure:</strong> {result1}
+              <strong>Recommended Cure:</strong> 
+              <p className="break-words">{result1}</p>
             </div>
           )}
         </div>
@@ -161,37 +177,49 @@ const Camerageter = () => {
   const renderResourcesSection = () => {
     return <FarmerResourcesPortal />;
   };
-
+  const handleonclick= (e) => {
+    setActiveSection(e.target.name);
+    if(e.target.name==="disease-detection"){
+      window.location.reload();
+    }
+ 
+    
+  };
   const renderSideNavigation = () => (
     <div className="bg-green-900 text-white p-4 rounded-lg">
       <h2 className="text-xl font-bold mb-4">Farmer Support Services</h2>
       <nav>
         <button 
-          onClick={() => setActiveSection('disease-detection')}
+          onClick={handleonclick}
+          name="disease-detection"
           className={`w-full text-left p-2 rounded mb-2 ${activeSection === 'disease-detection' ? 'bg-green-700' : 'hover:bg-green-800'}`}
         >
           <Camera className="inline mr-2" /> Plant Disease Detection
         </button>
         <button 
-          onClick={() => setActiveSection('advisory')}
+          onClick={handleonclick}
+          name="advisory"
           className={`w-full text-left p-2 rounded mb-2 ${activeSection === 'advisory' ? 'bg-green-700' : 'hover:bg-green-800'}`}
         >
           <HelpCircle className="inline mr-2" /> Agricultural Advisory
         </button>
         <button 
-          onClick={() => setActiveSection('Support Centers')}
+          onClick={handleonclick}
+          name="Support Centers"
           className={`w-full text-left p-2 rounded mb-2 ${activeSection === 'Support Centers' ? 'bg-green-700' : 'hover:bg-green-800'}`}
         >
           <MapPin className="inline mr-2" /> Regional Support Centers
         </button>
         <button 
-          onClick={() => setActiveSection('Schemes')}
+          onClick={handleonclick}
+          name="Schemes"
           className={`w-full text-left p-2 rounded mb-2 ${activeSection === 'Schemes' ? 'bg-green-700' : 'hover:bg-green-800'}`}
         >
           <Shield className="inline mr-2" /> Government Schemes
         </button>
         <button 
-          onClick={() => setActiveSection('resources')}
+          onClick={handleonclick}
+          name="resources"
           className={`w-full text-left p-2 rounded mb-2 ${activeSection === 'resources' ? 'bg-green-700' : 'hover:bg-green-800'}`}
         >
           <FileText className="inline mr-2" /> Resources & Documentation
